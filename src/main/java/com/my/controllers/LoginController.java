@@ -13,6 +13,8 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -58,19 +60,21 @@ public class LoginController implements Serializable
         System.out.println("userService = " + userService);
         if (userService.login(username, password))
         {
+            LOGGER.debug("Access provided.");
             FacesContext.getCurrentInstance()
-                    .addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Access provided", ""));
-            System.out.println("Access provided");
+                    .addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Access provided.", ""));
         }
         else
         {
+            LOGGER.debug("Access denied.");
             FacesContext.getCurrentInstance()
-                    .addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Access denied", ""));
-            System.out.println("Access denied");
+                    .addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Access denied.", ""));
         }
 
         return "";
     }
+    
+    private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
     
     @Autowired
     private UserService userService;
